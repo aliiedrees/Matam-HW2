@@ -3,3 +3,4 @@ CMakeLists.txt
 /dry/dryProgram
 /dry/output.txt
 /dry/log.txt
+/build/

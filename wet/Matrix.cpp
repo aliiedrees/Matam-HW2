@@ -57,6 +57,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix& matrix){
         currentRow++;
         os << endl;
     }
+    return os;
 }
 
 Matrix Matrix::Transpose(){ //later check to return refernce
