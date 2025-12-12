@@ -2,14 +2,30 @@
 #include "Matrix.h"
 
 MataMvidia::MataMvidia(const string& movieName, const string& creator, const Matrix* frameArr
-    , const int& framesQuantity)
+        , const int& framesQuantity)
     : movieName(movieName), creator(creator) ,movieLength(framesQuantity){
         this->frames = new Matrix[framesQuantity];
         for(int i = 0; i < framesQuantity; i++){
             (this->frames)[i] = frameArr[i];
         }
 }
-
+MataMvidia::MataMvidia( const MataMvidia& mataMvidia)
+: movieName(mataMvidia.movieName), creator(mataMvidia.creator) ,movieLength(mataMvidia.movieLength)
+{
+    Matrix* frames = new Matrix[movieLength];
+    for(int i = 0; i < mataMvidia.movieLength; i++) {
+        frames[i] = mataMvidia.frames[i];
+    }
+}
+void MataMvidia::operator<<(ofstream& out) {
+    out << "Movie Name"<<this->movieName << endl;
+    out <<"Author" << this->creator << endl ;
+    out << "" << endl;
+    for(int i = 0; i < this->movieLength; i++) {
+        out << "frame" << i << ":" << endl;
+        out << this->frames[i] << endl;
+    }
+}
 MataMvidia& MataMvidia::operator+=(const MataMvidia& movie){
     int newSize = this->movieLength + movie.movieLength;
     Matrix* newFrames = new Matrix[newSize];

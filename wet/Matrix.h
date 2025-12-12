@@ -1,14 +1,15 @@
 #pragma once
 
 #include <iostream>
-
-class Matrix{
+#include <fstream>
+using namespace std;
+class Matrix {
     int length;
     int width;
     int* arr;
 
     friend Matrix MinorGenerate(const Matrix& matrix, const int& row, const int& column);
-    public:
+public:
     //Ali
     //constructors
     Matrix(const Matrix& matrix); //copy construct
@@ -17,14 +18,29 @@ class Matrix{
     ~Matrix();
     //operators
     Matrix& operator=(const Matrix& matrix); //העתקה
+    void operator<<( ofstream& out);
     bool operator==(const Matrix& matrix);
     bool operator!=(const Matrix& matrix);
+    int& operator()(const int& row, const int& column);
+    Matrix& operator+(const Matrix& matrix);
+    Matrix& operator-(const Matrix& matrix);
+    Matrix& operator-();
+    Matrix& operator*( Matrix& matrix);
+    Matrix& operator*(const int& scalar);
+    Matrix& operator+=(const Matrix& matrix);
+    Matrix& operator-=(const Matrix& matrix);
+    Matrix& operator*=( Matrix& matrix);
+    Matrix& operator*=(const int& scalar);
+    Matrix& operator*(const int& scalar,Matrix& matrix);
+    Matrix& rotateClockwise();
+    Matrix& rotateCounterClockwise();
+    int CalcFrobeniusNorm() const ;
     friend std::ostream &operator<<(std::ostream &os, const Matrix& matrix);
     //methods
     Matrix Transpose(); // will figure later if returns a refrence
     //static
     static int CalcDetirminant(const Matrix& matrix);// will figure later if in .h or .cpp
 
-    //Abed
-    Matrix(const int& row, const int& column);
+    //Abe
+    Matrix(const int& length, const int& wedth , const int& startValue = 0);
 };
