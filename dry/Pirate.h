@@ -11,6 +11,7 @@ private:
 
 public:
     Pirate(const string& name);
+    Pirate() = default;
 
     ~Pirate() = default;
 
