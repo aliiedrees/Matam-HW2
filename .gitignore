@@ -1,0 +1,5 @@
+CMakeLists.txt
+/dry/build/
+/dry/dryProgram
+/dry/output.txt
+/dry/log.txt

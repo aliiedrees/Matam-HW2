@@ -7,6 +7,7 @@ class Matrix{
     int width;
     int* arr;
 
+    friend Matrix MinorGenerate(const Matrix& matrix, const int& row, const int& column);
     public:
     //Ali
     //constructors
@@ -25,4 +26,5 @@ class Matrix{
     static int CalcDetirminant(const Matrix& matrix);// will figure later if in .h or .cpp
 
     //Abed
+    Matrix(const int& row, const int& column);
 };
