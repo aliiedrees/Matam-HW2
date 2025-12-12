@@ -5,12 +5,15 @@
 class Matrix{
     int length;
     int width;
-    int* matrix;
+    int* arr;
 
     public:
     //Ali
     //constructors
     Matrix(const Matrix& matrix); //copy construct
+    Matrix() = default;
+
+    ~Matrix();
     //operators
     Matrix& operator=(const Matrix& matrix); //העתקה
     bool operator==(const Matrix& matrix);
@@ -19,7 +22,7 @@ class Matrix{
     //methods
     Matrix Transpose(); // will figure later if returns a refrence
     //static
-    static int CalcDetirminant(const Matrix& matrix);
+    static int CalcDetirminant(const Matrix& matrix);// will figure later if in .h or .cpp
 
     //Abed
 };
