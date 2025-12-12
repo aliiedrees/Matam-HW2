@@ -17,7 +17,7 @@ class MataMvidia{
     //operators
     MataMvidia& operator+=(const MataMvidia& movie); // += movie
     MataMvidia& operator+=(const Matrix& matrix); // += frames
-    MataMvidia& operator+(const MataMvidia& movie);
+    MataMvidia operator+(const MataMvidia& movie) const;
     const Matrix& operator[](const int& frame) const;
 
     ///Abed

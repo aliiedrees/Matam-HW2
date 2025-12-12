@@ -39,5 +39,5 @@ MataMvidia& MataMvidia::operator+=(const Matrix& matrix){
 MataMvidia MataMvidia::operator+(const MataMvidia& movie) const {
     MataMvidia newMovie(this->movieName, this->creator, this->frames, this->movieLength);
     newMovie += movie;
-    return newMovie
+    return newMovie;
 }
