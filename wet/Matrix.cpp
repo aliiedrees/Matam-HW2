@@ -1,5 +1,6 @@
 #include "Matrix.h"
 #include "Utilities.h"
+#include <cmath>
 
 using std::endl;
 
@@ -33,67 +34,62 @@ Matrix& Matrix::operator=(const Matrix& matrix){ //will deal with if new fails l
     }
     return *this;
 }
-void Matrix::operator<<(ofstream& out) {
-    for(int i = 0 ; i < this->length ; i++) {
-        out << "|";
-        for (int j = 0; j < this->width ; j++ ) {
-            out << *(this->arr + i * this->width + j) << "|";
-        }
-        out << endl;
+
+int& Matrix::operator()(const int& row, const int& column) {
+    if(row >= this->length || column >= this->width || column < 0 || row < 0) {
+        exitWithError(MatamErrorType::OutOfBounds);
     }
+    int place = (row)*(this->width)+column;
+    return *(this->arr + place);
 }
-int& Matrix::operator()(const int& wedth, const int& length) {
-if(length > this->length || wedth > this->width || wedth < 0 || length < 0) {
-    exitWithError(MatamErrorType::OutOfBounds);
-}
-int place = wedth*(this->width)+length;
-    int& value = *(this->arr + place);
-    return value;
-}
-Matrix& Matrix::operator+(const Matrix& matrix) {
+Matrix Matrix::operator+(const Matrix& matrix) {
     if(this->length != matrix.length || this->width != matrix.width) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
+    Matrix result(this->length, this->width);
     for(int i = 0; i < this->length*this->width; i++) {
-        arr[i] += *(matrix.arr + i);
-    }
-    return *this;
-}
-Matrix& Matrix::operator-(const Matrix& matrix) {
-    if(this->length != matrix.length || this->width != matrix.width) {
-        exitWithError(MatamErrorType::UnmatchedSizes);
-    }
-    for(int i = 0; i < this->length*this->width; i++) {
-        arr[i] -= *(matrix.arr + i);
-    }
-    return *this;
-}
-int multipyRowColumn( Matrix& a, Matrix& b, const int& row, const int& column , const int& length) {
-    int result = 0;
-    for(int i = 0; i < length; i++) {
-        result += a(row*length,i)*b(column,length*i);
+        result.arr[i] = (this->arr)[i] + (matrix.arr)[i];
     }
     return result;
 }
-Matrix& Matrix::operator*( Matrix& matrix) {
-    if(this->width != matrix.length || this->length != matrix.width) {
+Matrix Matrix::operator-(const Matrix& matrix) {
+    if(this->length != matrix.length || this->width != matrix.width) {
+        exitWithError(MatamErrorType::UnmatchedSizes);
+    }
+    Matrix result(this->length, this->width);
+    for(int i = 0; i < this->length*this->width; i++) {
+        result.arr[i] = (this->arr)[i] -  *(matrix.arr + i);
+    }
+    return result;
+}
+
+
+
+Matrix Matrix::operator*( Matrix& matrix) {
+    if(this->width != matrix.length) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
     Matrix result(this->length, matrix.width);
-    int curr;
     for(int i = 0; i < result.length; i++) {
         for(int j = 0; j < result.width; j++) {
-           int curr = multipyRowColumn(*this, matrix,i,j,this->width);
-            result(i,j) = curr;
+            int currentSum = 0;
+            for (int k = 0; k < this->width; k++) {
+                // Dot product: Row i of First * Col j of Second
+                currentSum += (*this)(i, k) * matrix(k, j);
+            }
+            
+            result(i, j) = currentSum;
         }
     }
     return result;
 }
 Matrix& Matrix::operator+=(const Matrix& matrix) {
-    return *this + matrix;
+    *this = *this + matrix;
+    return *this;
 }
 Matrix& Matrix::operator-=(const Matrix& matrix) {
-    return *this - matrix;
+    *this = *this - matrix;
+    return *this;
 }
 Matrix& Matrix::operator-() {
     int size = this->width * this->length;
@@ -103,7 +99,8 @@ Matrix& Matrix::operator-() {
     return *this;
 }
 Matrix& Matrix::operator*=( Matrix& matrix) {
-    return *this * matrix;
+    *this = *this * matrix;
+    return *this;
 }
 Matrix& Matrix::operator*(const int& scalar){
     int size = this->width * this->length;
@@ -150,7 +147,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix& matrix){
     return os;
 }
 
-Matrix Matrix::Transpose(){ //later check to return refernce
+Matrix Matrix::transpose(){ //later check to return refernce
     Matrix transposed;
     const int size = length * width;
     transposed.width = this->length;
@@ -202,7 +199,7 @@ int Matrix::CalcDetirminant(const Matrix& matrix){
     if (matrix.length != matrix.width){
         exitWithError(MatamErrorType::NotSquareMatrix);
     }
-    if (matrix.length == matrix.width == 2){
+    if (matrix.length == 2 && matrix.width == 2){
         return matrix.arr[0]*matrix.arr[3] - matrix.arr[1]*matrix.arr[2];
     }
     int det = 0;
@@ -212,21 +209,21 @@ int Matrix::CalcDetirminant(const Matrix& matrix){
     }
     return det;
 }
-Matrix& Matrix::rotateClockwise() {
+Matrix Matrix::rotateClockwise() {
     int newWidth = this->length;
     int newLength = this->width;
-    Matrix rotated(newWidth, newLength);
-    for(int i = 0; i < newWidth; i++) {
-    for(int j = 0; j < newLength; j++) {
-        rotated.arr[newWidth - i + j*newWidth -1] = this->arr[j*newLength + i];
-    }
+    Matrix rotated(newLength, newWidth);
+    for(int i = 0; i < width; i++) {
+        for(int j = 0; j < length; j++) {
+            rotated(i,newWidth - j - 1) = (*this)(j,i);
+        }
     }
     return rotated;
 }
-Matrix& Matrix::rotateCounterClockwise() {
+Matrix Matrix::rotateCounterClockwise() {
     int newWidth = this->length;
     int newLength = this->width;
-    Matrix rotated(newWidth, newLength);
+    Matrix rotated(newLength, newWidth);
     for(int i = 0; i < newWidth; i++) {
         for(int j = 0; j < newLength; j++) {
             rotated.arr[j + i*newLength ] = this->arr[newWidth - i + j*newLength -1];

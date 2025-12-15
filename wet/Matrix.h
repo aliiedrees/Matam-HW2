@@ -15,32 +15,31 @@ public:
     Matrix(const Matrix& matrix); //copy construct
     Matrix() = default;
 
-    ~Matrix();
+    ~Matrix() = default;
     //operators
     Matrix& operator=(const Matrix& matrix); //העתקה
-    void operator<<( ofstream& out);
+   // void operator<<( ofstream& out);
     bool operator==(const Matrix& matrix);
     bool operator!=(const Matrix& matrix);
     int& operator()(const int& row, const int& column);
-    Matrix& operator+(const Matrix& matrix);
-    Matrix& operator-(const Matrix& matrix);
+    Matrix operator+(const Matrix& matrix);
+    Matrix operator-(const Matrix& matrix);
     Matrix& operator-();
-    Matrix& operator*( Matrix& matrix);
+    Matrix operator*(Matrix& matrix);
     Matrix& operator*(const int& scalar);
     Matrix& operator+=(const Matrix& matrix);
     Matrix& operator-=(const Matrix& matrix);
     Matrix& operator*=( Matrix& matrix);
     Matrix& operator*=(const int& scalar);
-    Matrix& operator*(const int& scalar,Matrix& matrix);
-    Matrix& rotateClockwise();
-    Matrix& rotateCounterClockwise();
+    friend Matrix& operator*(const int& scalar,Matrix& matrix);
+    Matrix rotateClockwise();
+    Matrix rotateCounterClockwise();
     int CalcFrobeniusNorm() const ;
     friend std::ostream &operator<<(std::ostream &os, const Matrix& matrix);
     //methods
-    Matrix Transpose(); // will figure later if returns a refrence
+    Matrix transpose(); // will figure later if returns a refrence
     //static
     static int CalcDetirminant(const Matrix& matrix);// will figure later if in .h or .cpp
 
-    //Abe
     Matrix(const int& length, const int& wedth , const int& startValue = 0);
 };
