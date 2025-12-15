@@ -16,10 +16,12 @@ MataMvidia::MataMvidia( const MataMvidia& mataMvidia)
     for(int i = 0; i < mataMvidia.movieLength; i++) {
         frames[i] = mataMvidia.frames[i];
     }
+    *this->frames = *frames;
+    delete[] frames;
 }
 std::ostream& operator<<(ostream& os, const MataMvidia& movie){
-    os << "Movie Name"<< movie.movieName << endl;
-    os <<"Author" << movie.creator << endl ;
+    os << "Movie Name :"<< movie.movieName << endl;
+    os <<"Author :" << movie.creator << endl ;
     os << " " << endl;
     for(int i = 0; i < movie.movieLength; i++) {
         os << "frame" << i << ":" << endl;
@@ -50,14 +52,14 @@ MataMvidia& MataMvidia::operator+=(const Matrix& matrix){
         newFrames[i] = (this->frames)[i];
     }
     newFrames[this->movieLength] = matrix;
-    delete[] this->frames;
+
     this->frames = newFrames;
     this->movieLength = newSize;
     return *this;
 }
 
 MataMvidia MataMvidia::operator+(const MataMvidia& movie) const {
-    MataMvidia newMovie(this->movieName, this->creator, this->frames, this->movieLength + movie.movieLength);
+    MataMvidia newMovie(this->movieName, this->creator, this->frames, this->movieLength);
     newMovie += movie;
     return newMovie;
 }

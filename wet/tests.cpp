@@ -5,7 +5,7 @@
 
 #include "Matrix.h"
 #include "MataMvidia.h"
-
+#define TWO 2
 using namespace std;
 typedef bool (*testFunc)(void);
 
@@ -24,7 +24,7 @@ do {                                                                           \
 
 
 int main() {
-    //testMatrix(std::cout);
+    testMatrix(std::cout);
     testMataMvidia(std::cout);
     return 0;
 }
@@ -74,10 +74,8 @@ bool testMatrix(std::ostream& out) {
 }
 
 bool testMataMvidia(std::ostream& out) {
-    out << "12";
     Matrix frame1(2,2);
     Matrix frame2(2,2);
-    out <<"0";
     frame1(0,0) = 1;
     frame1(0,1) = 2;
     frame1(1,0) = 3;
@@ -90,17 +88,17 @@ bool testMataMvidia(std::ostream& out) {
 
     Matrix array[2];
     array[0] = frame1;
+
     array[1] = frame2;
-    out << "1";
     MataMvidia movie("MataMatrix","Baraa Egbaria",array, 2);
-    out<< "2";
     out << movie;
+
     ASSERT_TEST(movie[0] == frame1);
 
-    movie += frame1;
+   movie += frame1;
+    out << movie;
 
     ASSERT_TEST(movie[2] == frame1);
-    out << "3";
     Matrix frame01(2,2);
     Matrix frame11(2,2);
 

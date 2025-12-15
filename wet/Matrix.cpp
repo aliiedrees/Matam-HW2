@@ -21,19 +21,17 @@ Matrix::Matrix(const int& length, const int& width , const int& startValue) : le
     }
 };
 Matrix& Matrix::operator=(const Matrix& matrix){ //will deal with if new fails later
-    if(this == &matrix){
+        if (this == &matrix) return *this;
+        length = matrix.length;
+        width = matrix.width;
+        arr = new int[length * width];
+
+        for (int i = 0; i < length * width; i++)
+            arr[i] = matrix.arr[i];
+
         return *this;
     }
-    const int size = matrix.length * matrix.width; 
-    this->length = matrix.length;
-    this->width = matrix.width;
-    delete[] this->arr;
-    this->arr = new int[size];
-    for(int i = 0; i < size; i++){
-        *(this->arr + i) = *(matrix.arr + i);
-    }
-    return *this;
-}
+
 
 int& Matrix::operator()(const int& row, const int& column) {
     if(row >= this->length || column >= this->width || column < 0 || row < 0) {
@@ -102,7 +100,7 @@ Matrix& Matrix::operator*=( Matrix& matrix) {
     *this = *this * matrix;
     return *this;
 }
-Matrix& Matrix::operator*(const int& scalar){
+Matrix Matrix::operator*(const int& scalar){
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
         arr[i] *= scalar;
@@ -110,9 +108,10 @@ Matrix& Matrix::operator*(const int& scalar){
     return *this;
 }
 Matrix& Matrix::operator*=(const int& scalar) {
-    return *this * scalar;
+    *this = *this * scalar;
+    return *this;
 }
-Matrix& operator*(const int& scalar,Matrix& matrix) {
+Matrix operator*(const int& scalar,Matrix& matrix) {
     return matrix * scalar;
 }
 bool Matrix::operator==(const Matrix& matrix){
