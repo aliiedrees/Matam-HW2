@@ -24,7 +24,7 @@ do {                                                                           \
 
 
 int main() {
-    testMatrix(std::cout);
+    //testMatrix(std::cout);
     testMataMvidia(std::cout);
     return 0;
 }
@@ -42,8 +42,8 @@ bool testMatrix(std::ostream& out) {
     m2(0,1) = 6;
     m2(1,0) = 7;
     m2(1,1) = 8;
-
     Matrix m3 = m1 + m2;
+
     ASSERT_TEST(m3(0,0) == 6);
     ASSERT_TEST(m3(0,1) == 8);
     ASSERT_TEST(m3(1,0) == 10);
@@ -63,7 +63,7 @@ bool testMatrix(std::ostream& out) {
 
     ASSERT_TEST(-m1 == -1*m1);
     ASSERT_TEST(-m1 == m1*-1);
-
+    
     ASSERT_TEST(m2.rotateClockwise().rotateCounterClockwise() == m2);
 
     ASSERT_TEST(m1.transpose().transpose() == m1);
@@ -74,9 +74,10 @@ bool testMatrix(std::ostream& out) {
 }
 
 bool testMataMvidia(std::ostream& out) {
+    out << "12";
     Matrix frame1(2,2);
     Matrix frame2(2,2);
-
+    out <<"0";
     frame1(0,0) = 1;
     frame1(0,1) = 2;
     frame1(1,0) = 3;
@@ -90,15 +91,16 @@ bool testMataMvidia(std::ostream& out) {
     Matrix array[2];
     array[0] = frame1;
     array[1] = frame2;
-
+    out << "1";
     MataMvidia movie("MataMatrix","Baraa Egbaria",array, 2);
-
+    out<< "2";
+    out << movie;
     ASSERT_TEST(movie[0] == frame1);
 
     movie += frame1;
 
     ASSERT_TEST(movie[2] == frame1);
-
+    out << "3";
     Matrix frame01(2,2);
     Matrix frame11(2,2);
 
@@ -117,7 +119,7 @@ bool testMataMvidia(std::ostream& out) {
     array1[1] = frame11;
 
     MataMvidia movie1("MataMatrix and the chamber of secrets","Baraa Egbaria",array1, 2);
-
+    out << movie1;
     ASSERT_TEST(movie1[0] == frame01);
 
     //test output

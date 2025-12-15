@@ -17,11 +17,12 @@ class MataMvidia{
     //operators
     MataMvidia(const MataMvidia* copy);
     MataMvidia& operator+=(const MataMvidia& movie); // += movie
-    void operator<<(ofstream& out);
+    //void operator<<(ofstream& out);
     MataMvidia& operator+=(const Matrix& matrix); // += frames
     MataMvidia operator+(const MataMvidia& movie) const;
     const Matrix& operator[](const int& frame) const;
-
+    Matrix& operator[](const int& frame);//write
+    friend std::ostream& operator<<(ostream& os, const MataMvidia& movie);
     ///Abed
     MataMvidia( const MataMvidia& mataMvidia);
 };
