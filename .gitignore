@@ -9,3 +9,6 @@ CMakeLists.txt
 .gitmodules
 Mvidia
 test.out
+/wet/MvidiaTest
+/wet/add-testing-tools.sh
+/wet/test_results.html
