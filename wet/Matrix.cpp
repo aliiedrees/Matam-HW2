@@ -3,7 +3,7 @@
 #include <cmath>
 
 using std::endl;
-
+Matrix::Matrix(): length(0), width(0), arr(nullptr){}
 Matrix::Matrix(const Matrix& matrix){
     const int size = matrix.length * matrix.width; 
     this->length = matrix.length;
@@ -194,17 +194,21 @@ Matrix MinorGenerate(const Matrix& matrix, const int& row, const int& column){
     return minor;
 }
 
-int Matrix::CalcDetirminant(const Matrix& matrix){
-    if (matrix.length != matrix.width){
+int Matrix::CalcDeterminant(const Matrix& matrix){
+    if (matrix.length != matrix.width || matrix.length == 0){
         exitWithError(MatamErrorType::NotSquareMatrix);
     }
-    if (matrix.length == 2 && matrix.width == 2){
+    if(matrix.length == 1){
+        return matrix.arr[0];
+    }
+    if (matrix.length == 2){
         return matrix.arr[0]*matrix.arr[3] - matrix.arr[1]*matrix.arr[2];
     }
     int det = 0;
     //i will be calculating the detriminat on the first row so the i represents the columns
     for(int i = 0; i < matrix.width; i++){
-        det += (-1)^i * CalcDetirminant(MinorGenerate(matrix, 0, i));
+        int sign = (i % 2 == 0 ? 1 : -1);
+        det += sign * matrix.arr[i] * CalcDeterminant(MinorGenerate(matrix, 0, i));
     }
     return det;
 }

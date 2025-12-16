@@ -13,7 +13,7 @@ public:
     //Ali
     //constructors
     Matrix(const Matrix& matrix); //copy construct
-    Matrix() = default;
+    Matrix();
 
     ~Matrix() = default;
     //operators
@@ -38,8 +38,7 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Matrix& matrix);
     //methods
     Matrix transpose(); // will figure later if returns a refrence
-    //static
-    static int CalcDetirminant(const Matrix& matrix);// will figure later if in .h or .cpp
+    static int CalcDeterminant(const Matrix& matrix);// will figure later if in .h or .cpp
 
     Matrix(const int& length, const int& wedth , const int& startValue = 0);
 };
