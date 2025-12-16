@@ -4,3 +4,8 @@ CMakeLists.txt
 /dry/output.txt
 /dry/log.txt
 /build/
+/TechnionMatam/*
+/MatamGenericTester/*
+.gitmodules
+Mvidia
+test.out
