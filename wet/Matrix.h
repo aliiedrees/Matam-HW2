@@ -26,12 +26,12 @@ public:
     Matrix operator-(const Matrix& matrix);
     Matrix& operator-();
     Matrix operator*(Matrix& matrix);
-    Matrix& operator*(const int& scalar);
+    Matrix operator*(const int& scalar);
     Matrix& operator+=(const Matrix& matrix);
     Matrix& operator-=(const Matrix& matrix);
     Matrix& operator*=( Matrix& matrix);
     Matrix& operator*=(const int& scalar);
-    friend Matrix& operator*(const int& scalar,Matrix& matrix);
+    friend Matrix operator*(const int& scalar,Matrix& matrix);
     Matrix rotateClockwise();
     Matrix rotateCounterClockwise();
     int CalcFrobeniusNorm() const ;
