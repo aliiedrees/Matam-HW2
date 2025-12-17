@@ -20,13 +20,14 @@ MataMvidia::MataMvidia( const MataMvidia& mataMvidia)
     delete[] frames;
 }
 std::ostream& operator<<(ostream& os, const MataMvidia& movie){
-    os << "Movie Name :"<< movie.movieName << endl;
-    os <<"Author :" << movie.creator << endl ;
-    os << " " << endl;
+    os << "Movie Name: "<< movie.movieName << endl;
+    os <<"Author: " << movie.creator << endl ;
+    os << "" << endl;
     for(int i = 0; i < movie.movieLength; i++) {
-        os << "frame" << i << ":" << endl;
+        os << "Frame " << i << ":" << endl;
         os << movie.frames[i] << endl;
     }
+    os << "-----End of Movie-----" << endl;
     return os;
 }
 
