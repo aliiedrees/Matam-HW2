@@ -2,7 +2,6 @@ CMakeLists.txt
 /dry/build/
 /dry/dryProgram
 /dry/output.txt
-/dry/log.txt
 /build/
 /wet/TechnionMatam/
 /wet/MatamGenericTester/
