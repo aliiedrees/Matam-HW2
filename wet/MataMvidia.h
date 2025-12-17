@@ -12,6 +12,7 @@ class MataMvidia{
     public:
     //Ali
     //constructor
+    ~MataMvidia();
     MataMvidia(const string& movieName, const string& creator, const Matrix* frameArr
         , const int& framesQuantity);
     //operators
@@ -25,4 +26,5 @@ class MataMvidia{
     friend std::ostream& operator<<(ostream& os, const MataMvidia& movie);
     ///Abed
     MataMvidia( const MataMvidia& mataMvidia);
+    MataMvidia& operator=(const MataMvidia& mataMvidia);
 };

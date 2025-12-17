@@ -15,7 +15,7 @@ public:
     Matrix(const Matrix& matrix); //copy construct
     Matrix();
 
-    ~Matrix() = default;
+    ~Matrix();
     //operators
     Matrix& operator=(const Matrix& matrix); //העתקה
    // void operator<<( ofstream& out);
@@ -24,14 +24,14 @@ public:
     int& operator()(const int& row, const int& column);
     Matrix operator+(const Matrix& matrix);
     Matrix operator-(const Matrix& matrix);
-    Matrix& operator-();
+    Matrix operator-();
     Matrix operator*(Matrix& matrix);
     Matrix operator*(const int& scalar);
     Matrix& operator+=(const Matrix& matrix);
     Matrix& operator-=(const Matrix& matrix);
     Matrix& operator*=( Matrix& matrix);
     Matrix& operator*=(const int& scalar);
-    friend Matrix operator*(const int& scalar,Matrix& matrix);
+    friend Matrix operator*(const int& scalar,const Matrix& matrix);
     Matrix rotateClockwise();
     Matrix rotateCounterClockwise();
     int CalcFrobeniusNorm() const ;

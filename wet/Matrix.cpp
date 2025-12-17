@@ -3,6 +3,9 @@
 #include <cmath>
 
 using std::endl;
+Matrix::~Matrix(){
+    delete[] this->arr;
+}
 Matrix::Matrix(): length(0), width(0), arr(nullptr){}
 Matrix::Matrix(const Matrix& matrix){
     const int size = matrix.length * matrix.width; 
@@ -13,24 +16,25 @@ Matrix::Matrix(const Matrix& matrix){
         *(this->arr + i) = *(matrix.arr + i);
     }
 }
-Matrix::Matrix(const int& length, const int& width , const int& startValue) : length(length), width(width){
+Matrix::Matrix(const int& length, const int& width , const int& startValue) : length(length), width(width), arr(nullptr){
     int arrLen = length * width;
-   arr = new int[arrLen];
+    this->arr = new int[arrLen];
     for (int i = 0; i < arrLen; i++) {
-        arr[i] = startValue;
+        this->arr[i] = startValue;
     }
 };
-Matrix& Matrix::operator=(const Matrix& matrix){ //will deal with if new fails later
-        if (this == &matrix) return *this;
-        length = matrix.length;
-        width = matrix.width;
-        arr = new int[length * width];
-
-        for (int i = 0; i < length * width; i++)
-            arr[i] = matrix.arr[i];
-
-        return *this;
+Matrix& Matrix::operator=(const Matrix& matrix){ 
+    if (this == &matrix) return *this;
+    length = matrix.length;
+    width = matrix.width;
+    if(arr != nullptr){
+        delete[] arr;
     }
+    this->arr = new int[this->length * this->width];
+    for (int i = 0; i < length * width; i++)
+        arr[i] = matrix.arr[i];
+    return *this;
+}
 
 
 int& Matrix::operator()(const int& row, const int& column) {
@@ -61,8 +65,6 @@ Matrix Matrix::operator-(const Matrix& matrix) {
     return result;
 }
 
-
-
 Matrix Matrix::operator*( Matrix& matrix) {
     if(this->width != matrix.length) {
         exitWithError(MatamErrorType::UnmatchedSizes);
@@ -89,30 +91,38 @@ Matrix& Matrix::operator-=(const Matrix& matrix) {
     *this = *this - matrix;
     return *this;
 }
-Matrix& Matrix::operator-() {
+Matrix Matrix::operator-() {
+    Matrix m2 = *this;
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
-        arr[i] *= -1;
+        m2.arr[i] *= -1;
     }
-    return *this;
+    return m2;
 }
 Matrix& Matrix::operator*=( Matrix& matrix) {
     *this = *this * matrix;
     return *this;
 }
 Matrix Matrix::operator*(const int& scalar){
+    Matrix m2 = *this;
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
-        arr[i] *= scalar;
+        m2.arr[i] *= scalar;
     }
-    return *this;
+    return m2;
 }
 Matrix& Matrix::operator*=(const int& scalar) {
     *this = *this * scalar;
     return *this;
 }
-Matrix operator*(const int& scalar,Matrix& matrix) {
-    return matrix * scalar;
+
+Matrix operator*(const int& scalar,const Matrix& matrix) { // make const
+    Matrix m2 = matrix;
+    int size = matrix.width * matrix.length;
+    for(int i = 0; i < size; i++) {
+        m2.arr[i] *= scalar;
+    }
+    return m2;
 }
 bool Matrix::operator==(const Matrix& matrix){
     if (this->length != matrix.length || this->width != matrix.width){
@@ -133,32 +143,30 @@ bool Matrix::operator!=(const Matrix& matrix){
 
 std::ostream &operator<<(std::ostream &os, const Matrix& matrix){
     int currentRow = 0, currentColumn = 0;
+    if(matrix.length == 0 || matrix.width == 0){
+        return os;
+    }
     while(currentRow < matrix.length){
-        os << "|";
         while(currentColumn < matrix.width){
-            os << matrix.arr[currentRow*matrix.width + currentColumn] << "|";
+            os << "|" << matrix.arr[currentRow*matrix.width + currentColumn];
             currentColumn++;
         }
+        os << "|" << endl;
         currentColumn = 0;
         currentRow++;
-        os << endl;
     }
     return os;
 }
 
 Matrix Matrix::transpose(){ //later check to return refernce
-    Matrix transposed;
-    const int size = length * width;
-    transposed.width = this->length;
-    transposed.length = this->width;
-    transposed.arr = new int[size];
+    Matrix transposed(this->width, this->length) ;
     int currentColumn = 0, currentRow = 0;
 
     //fill the transposed
     while (currentRow < transposed.length){
         while (currentColumn < transposed.width){
-            *(transposed.arr + currentRow*transposed.length + currentColumn) = 
-            *(this->arr + currentColumn*transposed.width + currentRow);
+            *(transposed.arr + currentRow*transposed.width + currentColumn) = 
+            *(this->arr + currentColumn*transposed.length + currentRow);
             currentColumn++;
         }
         currentColumn = 0;
@@ -229,7 +237,7 @@ Matrix Matrix::rotateCounterClockwise() {
     Matrix rotated(newLength, newWidth);
     for(int i = 0; i < newWidth; i++) {
         for(int j = 0; j < newLength; j++) {
-            rotated.arr[j + i*newLength ] = this->arr[newWidth - i + j*newLength -1];
+            rotated(newLength - j  - 1, i) = (*this)(i,j);
         }
     }
     return rotated;

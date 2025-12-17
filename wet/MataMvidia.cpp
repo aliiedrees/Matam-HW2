@@ -1,23 +1,25 @@
 #include "MataMvidia.h"
 #include "Matrix.h"
 #include "Utilities.h"
+MataMvidia::~MataMvidia(){
+    delete[] this->frames;
+}
 MataMvidia::MataMvidia(const string& movieName, const string& creator, const Matrix* frameArr
         , const int& framesQuantity)
-    : movieName(movieName), creator(creator) ,movieLength(framesQuantity){
+    : movieName(movieName), creator(creator) ,movieLength(framesQuantity), frames(nullptr){
         this->frames = new Matrix[framesQuantity];
         for(int i = 0; i < framesQuantity; i++){
             (this->frames)[i] = frameArr[i];
         }
 }
 MataMvidia::MataMvidia( const MataMvidia& mataMvidia)
-: movieName(mataMvidia.movieName), creator(mataMvidia.creator) ,movieLength(mataMvidia.movieLength)
+: movieName(mataMvidia.movieName), creator(mataMvidia.creator) ,movieLength(mataMvidia.movieLength),
+frames(nullptr)
 {
-    Matrix* frames = new Matrix[movieLength];
+    this->frames = new Matrix[movieLength];
     for(int i = 0; i < mataMvidia.movieLength; i++) {
         frames[i] = mataMvidia.frames[i];
     }
-    *this->frames = *frames;
-    delete[] frames;
 }
 std::ostream& operator<<(ostream& os, const MataMvidia& movie){
     os << "Movie Name: "<< movie.movieName << endl;
@@ -53,7 +55,7 @@ MataMvidia& MataMvidia::operator+=(const Matrix& matrix){
         newFrames[i] = (this->frames)[i];
     }
     newFrames[this->movieLength] = matrix;
-
+    delete[] this->frames;
     this->frames = newFrames;
     this->movieLength = newSize;
     return *this;
@@ -77,4 +79,19 @@ Matrix& MataMvidia::operator[](const int& frame){
         exitWithError(MatamErrorType::OutOfBounds);
     }
     return this->frames[frame];
+}
+
+MataMvidia& MataMvidia::operator=(const MataMvidia& mataMvidia){
+    if(this == &mataMvidia) return *this;
+    this->creator = mataMvidia.creator;
+    this->movieLength = mataMvidia.movieLength;
+    this->movieName = mataMvidia.movieName;
+    if(this->frames != nullptr){
+        delete[] frames;
+    }
+    frames = new Matrix[mataMvidia.movieLength];
+    for(int i=0; i < mataMvidia.movieLength; i++){
+        frames[i] = mataMvidia.frames[i];
+    }
+    return *this;
 }
