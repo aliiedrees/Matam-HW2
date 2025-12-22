@@ -103,7 +103,7 @@ Matrix& Matrix::operator*=( Matrix& matrix) {
     *this = *this * matrix;
     return *this;
 }
-Matrix Matrix::operator*(const int& scalar){
+Matrix Matrix::operator*(const int& scalar) const{
     Matrix m2 = *this;
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
@@ -137,7 +137,7 @@ bool Matrix::operator==(const Matrix& matrix) const{
     return true;
 }
 
-bool Matrix::operator!=(const Matrix& matrix){
+bool Matrix::operator!=(const Matrix& matrix) const{
     return !(*this == matrix);
 }
 
