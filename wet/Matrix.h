@@ -22,6 +22,7 @@ public:
     bool operator==(const Matrix& matrix) const;
     bool operator!=(const Matrix& matrix) const;
     int& operator()(const int& row, const int& column);
+    const int& operator()(const int& row, const int& column) const;
     Matrix operator+(const Matrix& matrix) const;
     Matrix operator-(const Matrix& matrix) const;
     Matrix operator-() const;

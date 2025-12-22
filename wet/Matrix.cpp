@@ -44,6 +44,13 @@ int& Matrix::operator()(const int& row, const int& column) {
     int place = (row)*(this->width)+column;
     return *(this->arr + place);
 }
+const int& operator()(const int& row, const int& column) const{
+    if(row >= this->length || column >= this->width || column < 0 || row < 0) {
+        exitWithError(MatamErrorType::OutOfBounds);
+    }
+    int place = (row)*(this->width)+column;
+    return *(this->arr + place);
+}
 Matrix Matrix::operator+(const Matrix& matrix) const{
     if(this->length != matrix.length || this->width != matrix.width) {
         exitWithError(MatamErrorType::UnmatchedSizes);
@@ -65,7 +72,7 @@ Matrix Matrix::operator-(const Matrix& matrix) const{
     return result;
 }
 
-Matrix Matrix::operator*( Matrix& matrix) const {
+Matrix Matrix::operator*(const Matrix& matrix) const {
     if(this->width != matrix.length) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
@@ -116,7 +123,7 @@ Matrix& Matrix::operator*=(const int& scalar) {
     return *this;
 }
 
-Matrix operator*(const int& scalar,const Matrix& matrix) const { // make const
+Matrix operator*(const int& scalar,const Matrix& matrix) { // make const
     Matrix m2 = matrix;
     int size = matrix.width * matrix.length;
     for(int i = 0; i < size; i++) {
@@ -202,7 +209,7 @@ Matrix MinorGenerate(const Matrix& matrix, const int& row, const int& column){
     return minor;
 }
 
-int Matrix::CalcDeterminant(const Matrix& matrix) const{
+int Matrix::CalcDeterminant(const Matrix& matrix){
     if (matrix.length != matrix.width || matrix.length == 0){
         exitWithError(MatamErrorType::NotSquareMatrix);
     }
