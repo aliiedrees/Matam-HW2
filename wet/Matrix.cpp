@@ -44,7 +44,7 @@ int& Matrix::operator()(const int& row, const int& column) {
     int place = (row)*(this->width)+column;
     return *(this->arr + place);
 }
-const int& operator()(const int& row, const int& column) const{
+const int& Matrix::operator()(const int& row, const int& column) const{
     if(row >= this->length || column >= this->width || column < 0 || row < 0) {
         exitWithError(MatamErrorType::OutOfBounds);
     }
