@@ -44,7 +44,14 @@ int& Matrix::operator()(const int& row, const int& column) {
     int place = (row)*(this->width)+column;
     return *(this->arr + place);
 }
-Matrix Matrix::operator+(const Matrix& matrix) {
+const int& Matrix::operator()(const int& row, const int& column) const{
+    if(row >= this->length || column >= this->width || column < 0 || row < 0) {
+        exitWithError(MatamErrorType::OutOfBounds);
+    }
+    int place = (row)*(this->width)+column;
+    return *(this->arr + place);
+}
+Matrix Matrix::operator+(const Matrix& matrix) const{
     if(this->length != matrix.length || this->width != matrix.width) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
@@ -54,7 +61,7 @@ Matrix Matrix::operator+(const Matrix& matrix) {
     }
     return result;
 }
-Matrix Matrix::operator-(const Matrix& matrix) {
+Matrix Matrix::operator-(const Matrix& matrix) const{
     if(this->length != matrix.length || this->width != matrix.width) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
@@ -65,7 +72,7 @@ Matrix Matrix::operator-(const Matrix& matrix) {
     return result;
 }
 
-Matrix Matrix::operator*( Matrix& matrix) {
+Matrix Matrix::operator*(const Matrix& matrix) const {
     if(this->width != matrix.length) {
         exitWithError(MatamErrorType::UnmatchedSizes);
     }
@@ -91,7 +98,7 @@ Matrix& Matrix::operator-=(const Matrix& matrix) {
     *this = *this - matrix;
     return *this;
 }
-Matrix Matrix::operator-() {
+Matrix Matrix::operator-() const{
     Matrix m2 = *this;
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
@@ -103,7 +110,7 @@ Matrix& Matrix::operator*=( Matrix& matrix) {
     *this = *this * matrix;
     return *this;
 }
-Matrix Matrix::operator*(const int& scalar){
+Matrix Matrix::operator*(const int& scalar) const{
     Matrix m2 = *this;
     int size = this->width * this->length;
     for(int i = 0; i < size; i++) {
@@ -124,7 +131,7 @@ Matrix operator*(const int& scalar,const Matrix& matrix) { // make const
     }
     return m2;
 }
-bool Matrix::operator==(const Matrix& matrix){
+bool Matrix::operator==(const Matrix& matrix) const{
     if (this->length != matrix.length || this->width != matrix.width){
         return false;
     }
@@ -137,7 +144,7 @@ bool Matrix::operator==(const Matrix& matrix){
     return true;
 }
 
-bool Matrix::operator!=(const Matrix& matrix){
+bool Matrix::operator!=(const Matrix& matrix) const{
     return !(*this == matrix);
 }
 
@@ -158,7 +165,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix& matrix){
     return os;
 }
 
-Matrix Matrix::transpose(){ //later check to return refernce
+Matrix Matrix::transpose() const{ //later check to return refernce
     Matrix transposed(this->width, this->length) ;
     int currentColumn = 0, currentRow = 0;
 
@@ -202,7 +209,7 @@ Matrix MinorGenerate(const Matrix& matrix, const int& row, const int& column){
     return minor;
 }
 
-int Matrix::CalcDeterminant(const Matrix& matrix){
+double Matrix::CalcDeterminant(const Matrix& matrix){
     if (matrix.length != matrix.width || matrix.length == 0){
         exitWithError(MatamErrorType::NotSquareMatrix);
     }
@@ -220,7 +227,7 @@ int Matrix::CalcDeterminant(const Matrix& matrix){
     }
     return det;
 }
-Matrix Matrix::rotateClockwise() {
+Matrix Matrix::rotateClockwise() const {
     int newWidth = this->length;
     int newLength = this->width;
     Matrix rotated(newLength, newWidth);
@@ -231,7 +238,7 @@ Matrix Matrix::rotateClockwise() {
     }
     return rotated;
 }
-Matrix Matrix::rotateCounterClockwise() {
+Matrix Matrix::rotateCounterClockwise() const {
     int newWidth = this->length;
     int newLength = this->width;
     Matrix rotated(newLength, newWidth);
