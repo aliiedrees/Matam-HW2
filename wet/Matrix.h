@@ -39,11 +39,7 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Matrix& matrix);
     //methods
     Matrix transpose() const; // will figure later if returns a refrence
-<<<<<<< HEAD
     static double CalcDeterminant(const Matrix& matrix);// will figure later if in .h or .cpp
-=======
-    static int CalcDeterminant(const Matrix& matrix);// will figure later if in .h or .cpp
->>>>>>> submit
 
     Matrix(const int& length, const int& wedth , const int& startValue = 0);
 };
